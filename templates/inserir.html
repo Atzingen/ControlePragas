@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<div class="container" id="principal">
+  <div id="map"></div>
+  <br>
+  <div class="container">
+    <p id="texto-auxilio" class='text-center'>
+      Clique no local que encontrou o escorpião
+    </p>
+  </div>
+  <br>
+  <div id="controle" class="container d-none">
+    <div class="row">
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-group">
+          <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+              <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+              <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+              </div>
+          </div>
+      </div>
+      </div>
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-group">
+            <input class="form-control" type="number" id="quantidade-input" placeholder="Quantidade">
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-group">
+          <a href="#" class="btn btn-success btn-block" id="salvar" style="width:100%"> 
+            <i class="fas fa-check-circle"></i> Salvar
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-12">
+        <div class="form-group">
+          <a href="#" class="btn btn-danger btn-block" id="apagar" style="width:100%">
+            <i class="fas fa-trash-alt"></i> Apagar
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+  <h3 class='text-center'>
+    Entradas já cadastradas
+  </h3>
+  <table class="table">
+    <thead>
+      <th scope="col">Entrada</th>
+      <th scope="col">Data</th>
+      <th scope="col">Horário</th>
+      <th scope="col">Quantidade</th>
+      <th scope="col">Latitude</th>
+      <th scope="col">Longitude</th>
+    </thead>
+    <tbody>
+      <td>1</td>
+      <td>01/04/2019</td>
+      <td>15:35</td>
+      <td>3</td>
+      <td>-22.679705</td>
+      <td>-47.623842</td>
+    </tbody>
+    <tbody>
+      <td>1</td>
+      <td>01/04/2019</td>
+      <td>15:35</td>
+      <td>3</td>
+      <td>-22.679705</td>
+      <td>-47.623842</td>
+    </tbody>
+    <tbody>
+      <td>1</td>
+      <td>01/04/2019</td>
+      <td>15:35</td>
+      <td>3</td>
+      <td>-22.679705</td>
+      <td>-47.623842</td>
+    </tbody>
+    <tbody>
+      <td>1</td>
+      <td>01/04/2019</td>
+      <td>15:35</td>
+      <td>3</td>
+      <td>-22.679705</td>
+      <td>-47.623842</td>
+    </tbody>
+  </table>
+</div>
+<br><br><br>
+{% endblock %}
+
+{% block javascript %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBam3QZmPzXFea8M5JXUxPI_uveZ63miTY&callback=initMap"
+    async defer></script>
+<script>
+  var map;
+  var adicionar = true;
+  var posicao = false;
+  var marker = false;
+  $( document ).ready(function() {
+    $("#apagar").click(function(){
+      adicionar = true;
+      $("#controle").addClass('d-none');
+      $("#texto-auxilio").text("Clique no local que encontrou o escorpião");
+      posicao = false;
+      marker.setMap(null); 
+    });
+    $("#salvar").click(function(){
+      adicionar = false;
+      $("#controle").removeClass('d-none');
+      var quantidade = $("#quantidade-input").val();
+      var data = $("#datetimepicker1").datetimepicker('date');
+      // alert(quantidade);
+      // alert(data);
+      // alert(posicao);
+      /*
+      Enviar data, quantidade e posicao para o servidor
+      Redirecionar para lista com 
+      */
+    });
+  });
+  function initMap() {
+    var noPoi = [
+    {
+        featureType: "poi",
+        stylers: [
+          { visibility: "off" }
+        ]   
+      }
+    ];
+    map = new google.maps.Map(document.getElementById('map'), { 
+      center: {lat: -22.679705, lng: -47.623842},
+      zoom: 17,
+      disableDefaultUI: true,
+    });
+    map.setOptions({styles: noPoi});
+    google.maps.event.addListener(map, 'click', function(event) {
+      if (adicionar)
+      {
+        $("#controle").removeClass('d-none');
+        $("#texto-auxilio").text("Adicione a data, quantidade e clique em salvar");
+        marker = new google.maps.Marker({
+        position: event.latLng,
+        map: map,
+        title: 'Escorpião'
+        });
+        adicionar = false;
+        posicao = event.latLng;
+      }          
+    });
+  }
+  $(function () {
+      $('#datetimepicker1').datetimepicker();
+  });
+</script>
+{% endblock %}
