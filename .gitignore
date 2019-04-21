@@ -1,0 +1,9 @@
+# Ignorar os precompilados - Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Ignorar config - semente para hash e chaves
+config.cfg
+
+# ignorar google cloud file
+.gcloudignore
