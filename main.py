@@ -5,6 +5,7 @@ import banco
 
 app = Flask(__name__)
 app.secret_key = b'fjsdakljfwecvakvkjvkdjafkjf'
+#banco.cria_banco()
 
 def login_required(f):
     @wraps(f)
@@ -12,6 +13,7 @@ def login_required(f):
         if 'logged_in' in session:
             return f(*args, **kwargs)
         else:
+            flash('Você precisa fazer login antes')
             return redirect(url_for('login'))
     return wrap
 
@@ -35,13 +37,14 @@ def cadastro():
                 session['nome'] = nome
             banco.insere_pessoa(nome, email, int(quadra), int(lote), str(telefone), password)
             if 'logged_in' in session:
-                flash('Usuário cadastrado com sucesso')
-            else:
                 flash('Usuário atualizado com sucesso')
+            else:
+                flash('Usuário cadastrado com sucesso')
             return redirect(url_for('inserir'))
         except Exception as e:
             print("except", e)
             flash('Erro no preenchimento do cadastro')
+            flash(e)
             render_template('cadastro.html')
     return render_template('cadastro.html')
 
