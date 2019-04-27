@@ -26,14 +26,28 @@ def delete_pessoa(email):
     conn.commit()
     conn.close()
 
-def insere_praga(latitude, longitude, quem, quantidade):
+def insere_praga(latitude, longitude, tempo, quem, quantidade):
     conn = sqlite3.connect(local_banco)
     cursor = conn.cursor()
-    tempo = datetime.datetime.now()
     cursor.execute("""INSERT INTO escorpiao(latitude, longitude, time, quem, quantidade) 
                       VALUES(?,?,?,?,?)""",(latitude, longitude, tempo,quem, quantidade))
     conn.commit()
     conn.close()
+
+def lista_pragas(pessoa=None, data=None):
+    conn = sqlite3.connect(local_banco)
+    cursor = conn.cursor()
+    if pessoa:
+        if not data:
+            cursor.execute("""SELECT * FROM escorpiao WHERE quem=?""", (pessoa,))
+        else:
+            pass  #TODO query by date
+    else:
+        if not data:
+            cursor.execute("""SELECT * FROM escorpiao""")
+        else:
+            pass # aqui tambem query by date
+    return cursor.fetchall()
 
 def remove_praga(id):
     conn = sqlite3.connect(local_banco)

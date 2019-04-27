@@ -1,5 +1,7 @@
 from flask import Flask, render_template, redirect, session, request, url_for, flash, make_response
 from functools import wraps
+from ast import literal_eval
+from dateutil import parser
 from passlib.hash import sha256_crypt
 import banco
 
@@ -51,7 +53,24 @@ def cadastro():
 @app.route("/inserir")
 @login_required
 def inserir():
-    return render_template("inserir.html")
+    if request.args:
+        quantidade = int(request.args.get('quantidade'))
+        data = parser.parse(request.args.get('data'))
+        posicao = literal_eval(request.args.get('posicao'))
+        banco.insere_praga(posicao[0], posicao[1], data, session['email'], quantidade)
+    pragas_usuario = banco.lista_pragas(pessoa=session['email'])
+    print(pragas_usuario)
+    return render_template("inserir.html", pragas_usuario=pragas_usuario)
+
+@app.route('/apagar')
+@login_required
+def apagar():
+    if request.args:
+        id_apagar = request.args.get('id')
+        banco.remove_praga(int(id_apagar))
+        flash('Dado apagado')
+    pragas_usuario = banco.lista_pragas(pessoa=session['email'])
+    return render_template('inserir.html', pragas_usuario=pragas_usuario)
 
 @app.route("/analise")
 @login_required

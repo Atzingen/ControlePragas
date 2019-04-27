@@ -47,48 +47,28 @@
   <h3 class='text-center'>
     Entradas já cadastradas
   </h3>
-  <table class="table">
-    <thead>
-      <th scope="col">Entrada</th>
-      <th scope="col">Data</th>
-      <th scope="col">Horário</th>
-      <th scope="col">Quantidade</th>
-      <th scope="col">Latitude</th>
-      <th scope="col">Longitude</th>
-    </thead>
-    <tbody>
-      <td>1</td>
-      <td>01/04/2019</td>
-      <td>15:35</td>
-      <td>3</td>
-      <td>-22.679705</td>
-      <td>-47.623842</td>
-    </tbody>
-    <tbody>
-      <td>1</td>
-      <td>01/04/2019</td>
-      <td>15:35</td>
-      <td>3</td>
-      <td>-22.679705</td>
-      <td>-47.623842</td>
-    </tbody>
-    <tbody>
-      <td>1</td>
-      <td>01/04/2019</td>
-      <td>15:35</td>
-      <td>3</td>
-      <td>-22.679705</td>
-      <td>-47.623842</td>
-    </tbody>
-    <tbody>
-      <td>1</td>
-      <td>01/04/2019</td>
-      <td>15:35</td>
-      <td>3</td>
-      <td>-22.679705</td>
-      <td>-47.623842</td>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <th scope="col">Entrada</th>
+        <th scope="col">Data</th>
+        <th scope="col">Horário</th>
+        <th scope="col">Quantidade</th>
+        <th scope="col">Latitude</th>
+        <th scope="col">Longitude</th>
+      </thead>
+      {% for praga in pragas_usuario %}
+        <tbody>
+          <td>{{praga[0]}} <a href="/apagar?id={{praga[0]}}"> <i class="fa fa-trash" aria-hidden="true"></i></a></td>
+          <td>{{praga[3].split(' ')[0]}}</td>
+          <td>{{praga[3].split(' ')[1][:5]}}min</td>
+          <td>{{praga[5]}}</td>
+          <td>{{praga[1]}}</td>
+          <td>{{praga[2]}}</td>
+        </tbody>
+      {% endfor %}
+    </table>
+  </div>
 </div>
 <br><br><br>
 {% endblock %}
@@ -101,6 +81,7 @@
   var adicionar = true;
   var posicao = false;
   var marker = false;
+  var data;
   $( document ).ready(function() {
     $("#apagar").click(function(){
       adicionar = true;
@@ -113,14 +94,8 @@
       adicionar = false;
       $("#controle").removeClass('d-none');
       var quantidade = $("#quantidade-input").val();
-      var data = $("#datetimepicker1").datetimepicker('date');
-      // alert(quantidade);
-      // alert(data);
-      // alert(posicao);
-      /*
-      Enviar data, quantidade e posicao para o servidor
-      Redirecionar para lista com 
-      */
+      data = $("#datetimepicker1").datetimepicker('date');
+      window.location.href = "/inserir?quantidade=" + quantidade + "&data=" + data.toString() + "&posicao=" + posicao;
     });
   });
   function initMap() {
