@@ -74,41 +74,20 @@
 {% endblock %}
 
 {% block javascript %}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBam3QZmPzXFea8M5JXUxPI_uveZ63miTY&callback=initMap"
-    async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBam3QZmPzXFea8M5JXUxPI_uveZ63miTY"></script>
 <script>
   var map;
   var adicionar = true;
   var posicao = false;
   var marker = false;
   var data;
-  function initMap() {} 
-  $( document ).ready(function() {
-    $("#apagar").click(function(){
-      adicionar = true;
-      $("#controle").addClass('d-none');
-      $("#texto-auxilio").text("Clique no local que encontrou o escorpião");
-      posicao = false;
-      marker.setMap(null); 
-    });
-    $("#salvar").click(function(){
-      adicionar = false;
-      $("#controle").removeClass('d-none');
-      var quantidade = $("#quantidade-input").val();
-      data = $("#datetimepicker1").datetimepicker('date');
-      window.location.href = "/inserir?quantidade=" + quantidade + "&data=" + data.toString() + "&posicao=" + posicao;
-    });
-  });
+  function initMap() {}
   $(() => {
     initMap = function() {
-    var noPoi = [
-    {
-        featureType: "poi",
-        stylers: [
-          { visibility: "off" }
-        ]   
-      }
-    ];
+    var noPoi = [{
+      featureType: "poi",
+      stylers: [{ visibility: "off" }]   
+    }];
     map = new google.maps.Map(document.getElementById('map'), { 
       center: {lat: -22.679705, lng: -47.623842},
       zoom: 17,
@@ -130,8 +109,28 @@
       }          
     });
   }});
+  $( document ).ready(function() {
+    initMap();
+    $("#apagar").click(function(){
+      adicionar = true;
+      $("#controle").addClass('d-none');
+      $("#texto-auxilio").text("Clique no local que encontrou o escorpião");
+      posicao = false;
+      marker.setMap(null); 
+    });
+    $("#salvar").click(function(){
+      adicionar = false;
+      $("#controle").removeClass('d-none');
+      var quantidade = $("#quantidade-input").val();
+      data = $("#datetimepicker1").datetimepicker('date');
+      window.location.href = "/inserir?quantidade=" + quantidade + "&data=" + data.toString() + "&posicao=" + posicao;
+    });
+    
+  
+  });
   $(function () {
       $('#datetimepicker1').datetimepicker();
   });
 </script>
+
 {% endblock %}
