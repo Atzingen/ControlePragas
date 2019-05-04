@@ -82,6 +82,7 @@
   var posicao = false;
   var marker = false;
   var data;
+  function initMap() {} 
   $( document ).ready(function() {
     $("#apagar").click(function(){
       adicionar = true;
@@ -98,7 +99,8 @@
       window.location.href = "/inserir?quantidade=" + quantidade + "&data=" + data.toString() + "&posicao=" + posicao;
     });
   });
-  function initMap() {
+  $(() => {
+    initMap = function() {
     var noPoi = [
     {
         featureType: "poi",
@@ -127,7 +129,7 @@
         posicao = event.latLng;
       }          
     });
-  }
+  }});
   $(function () {
       $('#datetimepicker1').datetimepicker();
   });
