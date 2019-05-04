@@ -60,7 +60,6 @@ def inserir():
         posicao = literal_eval(request.args.get('posicao'))
         banco.insere_praga(posicao[0], posicao[1], data, session['email'], quantidade)
     pragas_usuario = banco.lista_pragas(pessoa=session['email'])
-    print(pragas_usuario)
     return render_template("inserir.html", pragas_usuario=pragas_usuario)
 
 @app.route('/apagar')
@@ -77,8 +76,6 @@ def apagar():
 @login_required
 def analise():
     dados = banco.lista_pragas()
-    for dado in dados:
-        print(dados)
     return render_template("analise.html", dados=dados)
 
 @app.route("/login")
