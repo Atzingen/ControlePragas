@@ -1,3 +1,4 @@
+# -*- coding: iso-8859-1 -*-
 from flask import Flask, render_template, redirect, session, request, url_for, flash, make_response
 from functools import wraps
 from ast import literal_eval
@@ -75,7 +76,10 @@ def apagar():
 @app.route("/analise")
 @login_required
 def analise():
-    return render_template("analise.html")
+    dados = banco.lista_pragas()
+    for dado in dados:
+        print(dados)
+    return render_template("analise.html", dados=dados)
 
 @app.route("/login")
 def login():
@@ -109,4 +113,4 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,7 +1,62 @@
 {% extends 'base.html' %}
 
-{% block conteudo %}
+{% block estilo %}
+    <style>
+    #map {
+        height: 100%;
+    }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+{% endblock %}
 
-<h1> Aqui serão apresentados os resultados  </h1>
+
+{% block conteudo %}
+    <div class="container" id="principal">
+        <h1> Aqui serão apresentados os resultados  </h1>
+        <br><br>
+        <div id="map"></div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    var map;
+    function initMap() {
+      console.log({{dados[0][1]|safe}});  
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: -22.679705, lng: -47.623842},
+        zoom: 17,
+        disableDefaultUI: true,
+      });
+      var noPoi = [
+      {
+        featureType: "poi",
+        stylers: [
+            { visibility: "off" }
+        ]   
+      }];
+      map.setOptions({styles: noPoi});
+      {% for dado in dados %}
+        marker = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: {lat: {{dado[1]|safe}}, lng: {{dado[2]|safe}}},
+            radius: 30
+        });
+      {% endfor %}
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBam3QZmPzXFea8M5JXUxPI_uveZ63miTY&callback=initMap"
+async defer></script>
 
 {% endblock %}
+
+
