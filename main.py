@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: latin-1 -*-
 from flask import Flask, render_template, redirect, session, request, url_for, flash, make_response
 from functools import wraps
 from ast import literal_eval
@@ -16,7 +16,7 @@ def login_required(f):
         if 'logged_in' in session:
             return f(*args, **kwargs)
         else:
-            flash('Você precisa fazer login antes')
+            flash('Voce precisa fazer login antes')
             return redirect(url_for('login'))
     return wrap
 
@@ -40,9 +40,9 @@ def cadastro():
                 session['nome'] = nome
             banco.insere_pessoa(nome, email, int(quadra), int(lote), str(telefone), password)
             if 'logged_in' in session:
-                flash('Usuário atualizado com sucesso')
+                flash('Usuario atualizado com sucesso')
             else:
-                flash('Usuário cadastrado com sucesso')
+                flash('Usuario cadastrado com sucesso')
             return redirect(url_for('inserir'))
         except Exception as e:
             print("except", e)
