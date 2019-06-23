@@ -26,7 +26,8 @@ def insere_pessoa(Nome, email, Quadra, Lote, Telefone, Senha):
                     VALUES(%s,%s,%s,%s,%s,%s)""",  (Nome, email, Quadra, Lote, Telefone, Senha))
         conn.commit()
         conn.close()
-    except:
+    except Exception as e:
+        print('insere_pessoa', e)
         conn.close()
         return None
 
@@ -37,7 +38,8 @@ def delete_pessoa(email):
         cursor.execute("""DELETE FROM pessoas WHERE email=%s""", (email,))
         conn.commit()
         conn.close()
-    except:
+    except Exception as e:
+        print('delete_pessoa', e)
         conn.close()
         return None
 
@@ -49,7 +51,8 @@ def insere_praga(latitude, longitude, tempo, quem, quantidade):
                           VALUES(%s,%s,%s,%s,%s)""",(latitude, longitude, tempo,quem, quantidade))
         conn.commit()
         conn.close()
-    except:
+    except Exception as e:
+        print('insere_praga', e)
         conn.close()
         return None
 
@@ -68,7 +71,8 @@ def lista_pragas(pessoa=None, data=None):
             else:
                 pass # aqui tambem query by date
         return cursor.fetchall()
-    except:
+    except Exception as e:
+        print('lista_pragas', e)
         conn.close()
         return None
 
@@ -79,7 +83,8 @@ def remove_praga(id):
         cursor.execute("""DELETE FROM escorpiao WHERE id=%s""", (id,))
         conn.commit()
         conn.close()
-    except:
+    except  Exception as e:
+        print('remove_praga', e)
         conn.close()
         return None
 
@@ -91,7 +96,8 @@ def senha_usuario(email):
         senha_banco = cursor.fetchone()[0]
         conn.close()
         return senha_banco
-    except:
+    except Exception as e:
+        print('senha_usuario', e)
         conn.close()
         return None
     
@@ -103,7 +109,8 @@ def nome_usuario(email):
         nome = cursor.fetchone()[0]
         conn.close()
         return nome
-    except:
+    except Exception as e:
+        print('nome_usuario', e)
         conn.close()
         return None
 
