@@ -7,7 +7,7 @@ import banco
 
 app = Flask(__name__)
 app.secret_key = b'fjsdakljfwecvakvkjvkdjafkjf'
-#banco.cria_banco()
+banco.cria_banco()
 
 def login_required(f):
     @wraps(f)
