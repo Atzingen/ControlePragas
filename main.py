@@ -1,4 +1,3 @@
-# -*- coding: latin-1 -*-
 from flask import Flask, render_template, redirect, session, request, url_for, flash, make_response
 from functools import wraps
 from ast import literal_eval

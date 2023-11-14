@@ -1,9 +1,10 @@
-# -*- coding: latin-1 -*-
 import psycopg2, datetime, os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 host_ip = os.environ.get('db_ip_host')
 db_pwd = os.environ.get('db_pwd')
-
 
 def cria_banco():
     try:
