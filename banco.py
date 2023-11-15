@@ -1,26 +1,38 @@
-# -*- coding: latin-1 -*-
 import psycopg2, datetime, os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 host_ip = os.environ.get('db_ip_host')
-db_pwd = os.environ.get('db_pwd')
+POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
+POSTGRES_USER = os.environ.get('POSTGRES_USER')
 
+def cria_connecao():
+    try:
+        conn = psycopg2.connect(host=host_ip, 
+                                database='pragas', 
+                                user=POSTGRES_USER, 
+                                password=POSTGRES_PASSWORD)
+        return conn
+    except:
+        return None
 
 def cria_banco():
     try:
-        conn = psycopg2.connect(host=host_ip, database='postgres', user='postgres', password=db_pwd)
+        conn = cria_connecao()
         cursor = conn.cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS escorpiao(id	SERIAL, latitude REAL NOT NULL, longitude REAL NOT NULL, time TEXT NOT NULL, quem TEXT NOT NULL, quantidade INTEGER)')
         conn.commit()
         cursor.execute('CREATE TABLE IF NOT EXISTS pessoas(id SERIAL, Nome TEXT, email TEXT NOT NULL UNIQUE, Quadra INTEGER, Lote INTEGER, Telefone TEXT,Senha TEXT)')
         conn.commit()
         conn.close()
-    except:
-        conn.close()
+    except Exception as e:
+        print(f'cria_banco: {e}')
         return None
         
 def insere_pessoa(Nome, email, Quadra, Lote, Telefone, Senha):
     try:
-        conn = psycopg2.connect(host=host_ip, database='postgres', user='postgres', password=db_pwd)
+        conn = cria_connecao()
         cursor = conn.cursor()
         cursor.execute("""INSERT INTO pessoas(Nome, email, Quadra, Lote, Telefone, Senha) 
                     VALUES(%s,%s,%s,%s,%s,%s)""",  (Nome, email, Quadra, Lote, Telefone, Senha))
@@ -33,7 +45,7 @@ def insere_pessoa(Nome, email, Quadra, Lote, Telefone, Senha):
 
 def delete_pessoa(email):
     try:
-        conn = psycopg2.connect(host=host_ip, database='postgres', user='postgres', password=db_pwd)
+        conn = cria_connecao()
         cursor = conn.cursor()
         cursor.execute("""DELETE FROM pessoas WHERE email=%s""", (email,))
         conn.commit()
@@ -45,7 +57,7 @@ def delete_pessoa(email):
 
 def insere_praga(latitude, longitude, tempo, quem, quantidade):
     try:
-        conn = psycopg2.connect(host=host_ip, database='postgres', user='postgres', password=db_pwd)
+        conn = cria_connecao()
         cursor = conn.cursor()
         cursor.execute("""INSERT INTO escorpiao(latitude, longitude, time, quem, quantidade) 
                           VALUES(%s,%s,%s,%s,%s)""",(latitude, longitude, tempo,quem, quantidade))
@@ -58,7 +70,7 @@ def insere_praga(latitude, longitude, tempo, quem, quantidade):
 
 def lista_pragas(pessoa=None, data=None):
     try:
-        conn = psycopg2.connect(host=host_ip, database='postgres', user='postgres', password=db_pwd)
+        conn = cria_connecao()
         cursor = conn.cursor()
         if pessoa:
             if not data:
@@ -78,7 +90,7 @@ def lista_pragas(pessoa=None, data=None):
 
 def remove_praga(id):
     try:
-        conn = psycopg2.connect(host=host_ip, database='postgres', user='postgres', password=db_pwd)
+        conn = cria_connecao()
         cursor = conn.cursor()
         cursor.execute("""DELETE FROM escorpiao WHERE id=%s""", (id,))
         conn.commit()
@@ -90,7 +102,7 @@ def remove_praga(id):
 
 def senha_usuario(email):
     try:
-        conn = psycopg2.connect(host=host_ip, database='postgres', user='postgres', password=db_pwd)
+        conn = cria_connecao()
         cursor = conn.cursor()
         cursor.execute("""SELECT senha from pessoas WHERE email=%s""", (email,))
         senha_banco = cursor.fetchone()[0]
@@ -103,7 +115,7 @@ def senha_usuario(email):
     
 def nome_usuario(email):
     try:
-        conn = psycopg2.connect(host=host_ip, database='postgres', user='postgres', password=db_pwd)
+        conn = cria_connecao()
         cursor = conn.cursor()
         cursor.execute("""SELECT Nome from pessoas WHERE email=%s""", (email,))    
         nome = cursor.fetchone()[0]

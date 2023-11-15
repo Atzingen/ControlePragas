@@ -1,4 +1,3 @@
-# -*- coding: latin-1 -*-
 from flask import Flask, render_template, redirect, session, request, url_for, flash, make_response
 from functools import wraps
 from ast import literal_eval
@@ -8,7 +7,7 @@ import banco
 
 app = Flask(__name__)
 app.secret_key = b'fjsdakljfwecvakvkjvkdjafkjf'
-#banco.cria_banco()
+banco.cria_banco()
 
 def login_required(f):
     @wraps(f)
