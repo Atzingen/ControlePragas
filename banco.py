@@ -10,6 +10,7 @@ POSTGRES_USER = os.environ.get('POSTGRES_USER')
 def cria_connecao():
     try:
         conn = psycopg2.connect(host=host_ip, 
+                                port='5433',
                                 database='pragas', 
                                 user=POSTGRES_USER, 
                                 password=POSTGRES_PASSWORD)
@@ -121,6 +122,19 @@ def nome_usuario(email):
         nome = cursor.fetchone()[0]
         conn.close()
         return nome
+    except Exception as e:
+        print('nome_usuario', e)
+        conn.close()
+        return None
+    
+def dados_usuario(email):
+    try:
+        conn = cria_connecao()
+        cursor = conn.cursor()
+        cursor.execute("""SELECT * from pessoas WHERE email=%s""", (email,))    
+        usuario = cursor.fetchone()
+        conn.close()
+        return usuario
     except Exception as e:
         print('nome_usuario', e)
         conn.close()

@@ -16,13 +16,18 @@
 
 {% block conteudo %}
     <div class="container" id="principal">
-        <h1> Aqui serão apresentados os resultados  </h1>
+        <h1> Escorpiões encontrados </h1>
         <br><br>
         <div id="map"></div>
+        <br><br>
+        <h1> Download todos os dados </h1>
+        <p> <a href="/download"> Clique aqui para baixar os dados </a> </p>
+        <br><br>
     </div>
 {% endblock %}
 
 {% block javascript %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}"></script>
 <script>
     var map;
     function initMap() { 
@@ -48,13 +53,14 @@
             fillOpacity: 0.35,
             map: map,
             center: {lat: {{dado[1]|safe}}, lng: {{dado[2]|safe}}},
-            radius: 30
+            radius: 10 + 3*{{dado[5]|safe}}
         });
       {% endfor %}
     }
+    $( document ).ready(function() {
+      initMap();
+    });
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmVkEXWdnwYSv41KCxZiYUSgJQjANf954&callback=initMap"
-async defer></script>
 
 {% endblock %}
 
