@@ -52,6 +52,8 @@ def cadastro():
                 banco.insere_pessoa(nome, email, int(quadra), int(lote), str(telefone), password)
                 flash('Usuario cadastrado com sucesso')
             else:
+                print(session)
+                print(codigo, CODIGO_INSCRICAO)
                 flash('Erro no preenchimento do cadastro')
             return redirect(url_for('inserir'))
         except Exception as e:

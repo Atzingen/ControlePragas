@@ -10,7 +10,7 @@ POSTGRES_USER = os.environ.get('POSTGRES_USER')
 def cria_connecao():
     try:
         conn = psycopg2.connect(host=host_ip, 
-                                port='5433',
+                                port='5432',
                                 database='pragas', 
                                 user=POSTGRES_USER, 
                                 password=POSTGRES_PASSWORD)
