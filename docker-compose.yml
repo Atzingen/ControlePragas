@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
   web:
     build: .
-    command: python deloy.py
+    command: python deploy.py
     volumes:
       - .:/code
     ports:
