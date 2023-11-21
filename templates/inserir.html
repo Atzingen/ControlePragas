@@ -2,13 +2,6 @@
 
 {% block conteudo %}
 <div class="container" id="principal">
-  <div id="map"></div>
-  <br>
-  <div class="container">
-    <p id="texto-auxilio" class='text-center'>
-      Clique no local que encontrou o escorpião
-    </p>
-  </div>
   <br>
   <div id="controle" class="container d-none">
     <div class="row">
@@ -44,8 +37,16 @@
     </div>
   </div>
   <br><br>
+  <div class="container">
+    <h3 id="texto-auxilio" class='text-center'>
+      Clique no local que encontrou o escorpião
+    </h3>
+  </div>
+  <br>
+  <div id="map"></div>
+  <br>
   <h3 class='text-center'>
-    Entradas já cadastradas
+    Suas entradas já cadastradas
   </h3>
   <div class="table-responsive">
     <table class="table">
@@ -125,12 +126,26 @@
       data = $("#datetimepicker1").datetimepicker('date');
       window.location.href = "/inserir?quantidade=" + quantidade + "&data=" + data.toString() + "&posicao=" + posicao;
     });
-    
-  
-  });
-  $(function () {
-      $('#datetimepicker1').datetimepicker();
   });
 </script>
+<script>
+  function formatDateToMMDDYYYY(date) {
+    var day = ('0' + date.getDate()).slice(-2);
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var year = date.getFullYear();
+
+    return month + '/' + day + '/' + year;
+  }
+  $(document).ready(function(){
+      // Set the current date as default for the date picker
+      var currentDate = new Date();
+      // $('#datetimepicker1 .datetimepicker-input').val(currentDate.toISOString().substring(0, 10));
+      var formattedDate = formatDateToMMDDYYYY(currentDate);
+      // Set the current date and time as default for the date picker
+      $('#datetimepicker1 .datetimepicker-input').val(formattedDate);
+      // Set the initial value of quantidade-input to 1
+      $('#quantidade-input').val(1);
+  });
+  </script>
 
 {% endblock %}

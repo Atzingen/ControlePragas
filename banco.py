@@ -1,5 +1,8 @@
 import psycopg2, datetime, os
 from dotenv import load_dotenv
+from logger_cfg import configure_logger
+
+logger = configure_logger()
 
 load_dotenv()
 
@@ -28,7 +31,7 @@ def cria_banco():
         conn.commit()
         conn.close()
     except Exception as e:
-        print(f'cria_banco: {e}')
+        logger.debug(f"except cria_banco \n{e}\n\n")
         return None
         
 def insere_pessoa(Nome, email, Quadra, Lote, Telefone, Senha):
@@ -40,7 +43,18 @@ def insere_pessoa(Nome, email, Quadra, Lote, Telefone, Senha):
         conn.commit()
         conn.close()
     except Exception as e:
-        print('insere_pessoa', e)
+        logger.debug(f"except insere_pessoa \n{e}\n\n")
+        conn.close()
+        return None
+
+def lista_pessoas():
+    try:
+        conn = cria_connecao()
+        cursor = conn.cursor()
+        cursor.execute("""SELECT * FROM pessoas""")
+        return cursor.fetchall()
+    except Exception as e:
+        logger.debug(f"except lista_pessoas \n{e}\n\n")
         conn.close()
         return None
 
@@ -52,7 +66,7 @@ def delete_pessoa(email):
         conn.commit()
         conn.close()
     except Exception as e:
-        print('delete_pessoa', e)
+        logger.debug(f"except delete_pessoa \n{e}\n\n")
         conn.close()
         return None
 
@@ -65,7 +79,7 @@ def insere_praga(latitude, longitude, tempo, quem, quantidade):
         conn.commit()
         conn.close()
     except Exception as e:
-        print('insere_praga', e)
+        logger.debug(f"except insere_praga \n{e}\n\n")
         conn.close()
         return None
 
@@ -85,7 +99,7 @@ def lista_pragas(pessoa=None, data=None):
                 pass # aqui tambem query by date
         return cursor.fetchall()
     except Exception as e:
-        print('lista_pragas', e)
+        logger.debug(f"except lista_pragas \n{e}\n\n")
         conn.close()
         return None
 
@@ -97,7 +111,7 @@ def remove_praga(id):
         conn.commit()
         conn.close()
     except  Exception as e:
-        print('remove_praga', e)
+        logger.debug(f"except remove_praga \n{e}\n\n")
         conn.close()
         return None
 
@@ -110,7 +124,7 @@ def senha_usuario(email):
         conn.close()
         return senha_banco
     except Exception as e:
-        print('senha_usuario', e)
+        logger.debug(f"except senha_usuario \n{e}\n\n")
         conn.close()
         return None
     
@@ -123,7 +137,7 @@ def nome_usuario(email):
         conn.close()
         return nome
     except Exception as e:
-        print('nome_usuario', e)
+        logger.debug(f"except nome_usuario \n{e}\n\n")
         conn.close()
         return None
     
@@ -136,7 +150,7 @@ def dados_usuario(email):
         conn.close()
         return usuario
     except Exception as e:
-        print('nome_usuario', e)
+        logger.debug(f"except dados_usuario \n{e}\n\n")
         conn.close()
         return None
 

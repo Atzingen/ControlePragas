@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<div class="container" id="principal">
+
+    <div class="table-responsive">
+    <table class="table">
+        <thead>
+            <th scope="col">Entrada</th>
+            <th scope="col">Data</th>
+            <th scope="col">Horário</th>
+            <th scope="col">Quantidade</th>
+            <th scope="col">Latitude</th>
+            <th scope="col">Longitude</th>
+        </thead>
+        {% for praga in dados %}
+        <tbody>
+            <td>{{praga[0]}} <a href="/apagar?id={{praga[0]}}"> <i class="fa fa-trash" aria-hidden="true"></i></a></td>
+            <td>{{praga[3].split(' ')[0]}}</td>
+            <td>{{praga[3].split(' ')[1][:5]}}min</td>
+            <td>{{praga[5]}}</td>
+            <td>{{praga[1]}}</td>
+            <td>{{praga[2]}}</td>
+        </tbody>
+        {% endfor %}
+    </table>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Quadra</th>
+                <th scope="col">Lote</th>
+            </thead>
+            {% for user in pessoas %}
+            <tbody>
+                <td>{{ user[0] }} <a href="/apaga_user?email={{user[2]}}"> <i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                <td>{{ user[1] }}</td>
+                <td>{{ user[2] }}</td>
+                <td>{{ user[3] }}</td>
+                <td>{{ user[4] }}</td>
+                            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
